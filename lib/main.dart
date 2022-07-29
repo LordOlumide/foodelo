@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
       initialRoute: WelcomeScreen.screenId,
       routes: {
         WelcomeScreen.screenId: (context) => const WelcomeScreen(),
-        HomeScreen.screenId: (context) => HomeScreen(),
         RegistrationScreen.screenId: (context) => RegistrationScreen(),
         VerifyEmailScreen.screenId: (context) => VerifyEmailScreen(),
         LoginScreen.screenId: (context) => LoginScreen(),
