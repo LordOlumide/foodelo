@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // screens
 import 'package:foodelo/screens/home_screen/home_screen.dart';
-import 'package:foodelo/screens/loading_screen/loading_screen.dart';
+import 'package:foodelo/screens/welcome_screen/welcome_screen.dart';
 import 'package:foodelo/screens/login_screen/login_screen.dart';
 import 'package:foodelo/screens/registration_screen/registration_screen.dart';
 
@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Foodelo',
-      initialRoute: LoadingScreen.screenId,
+      initialRoute: WelcomeScreen.screenId,
       routes: {
-        LoadingScreen.screenId: (context) => const LoadingScreen(),
+        WelcomeScreen.screenId: (context) => const WelcomeScreen(),
         HomeScreen.screenId: (context) => HomeScreen(),
         RegistrationScreen.screenId: (context) => RegistrationScreen(),
         LoginScreen.screenId: (context) => LoginScreen(),
