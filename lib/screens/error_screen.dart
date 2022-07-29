@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ErrorScreen extends StatelessWidget {
-  static String screenId = 'error_screen';
   final String error;
   final String predecessor_id;
 
@@ -36,7 +35,6 @@ class ErrorScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Something went wrong. \nError: $error'
-                              '\n\nThe email or password you provided may be wrong.'
                               '\n\nCheck Your internet and try again.',
                           textAlign: TextAlign.center,
                         ),

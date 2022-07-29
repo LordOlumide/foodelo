@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../multi_screen_ui_comps/custom_rounded_button.dart';
+import 'multi_screen_ui_comps/custom_rounded_button.dart';
 import 'package:foodelo/general_components/push_error_screen.dart';
 
 // screens
-import 'package:foodelo/screens/login_screen/login_screen.dart';
-import 'package:foodelo/screens/registration_screen/registration_screen.dart';
+import 'package:foodelo/screens/login_screen.dart';
+import 'package:foodelo/screens/registration_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const screenId = 'Welcome_screen';
