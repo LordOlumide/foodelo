@@ -1,4 +1,4 @@
-Map jaja_account_info = {
+Map king_kong_account_info = {
   "user": {
     "message": "User Registered Successfully",
     "success": true,
@@ -16,22 +16,22 @@ Map jaja_account_info = {
     },
   },
 };
-
-Map jaja_account_details = {
-  user: {
-    message: User Registered Successfully,
-    success: true,
-    statusCode: 200,
-    data: {
-      name: king jaja,
-      email: jaja@yahoo.com,
-      otp: e54ZUA,
-      verified: false,
-      wallet: 0,
-      _id: 62e3da51c14546d298bb571c,
-      createdAt: 2022-07-29T13:02:09.356Z,
-      updatedAt: 2022-07-29T13:02:09.356Z,
-      __v: 0,
-    },
-  },
-};
+//
+// Map jaja_account_details = {
+//   user: {
+//     message: User Registered Successfully,
+//     success: true,
+//     statusCode: 200,
+//     data: {
+//       name: king jaja,
+//       email: jaja@yahoo.com,
+//       otp: e54ZUA,
+//       verified: false,
+//       wallet: 0,
+//       _id: 62e3da51c14546d298bb571c,
+//       createdAt: 2022-07-29T13:02:09.356Z,
+//       updatedAt: 2022-07-29T13:02:09.356Z,
+//       __v: 0,
+//     },
+//   },
+// };

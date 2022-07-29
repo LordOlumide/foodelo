@@ -8,22 +8,35 @@ import 'package:foodelo/general_components/push_error_screen.dart';
 // screens
 import 'package:foodelo/screens/home_screen/home_screen.dart';
 
-class ConfirmEmailScreen extends StatefulWidget {
-  static const screenId = 'Confirm email screen';
-  const ConfirmEmailScreen({Key? key}) : super(key: key);
+class VerifyEmailScreen extends StatefulWidget {
+  static const screenId = 'Verify email screen';
+
+  String? passedEmail;
+  VerifyEmailScreen({Key? key, this.passedEmail}) : super(key: key);
 
   @override
-  State<ConfirmEmailScreen> createState() => _ConfirmEmailScreenState();
+  State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
 }
 
-class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
+class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   String email = '';
   String otp = '';
+
+  // Create a TextEditingController to set the initial value of the email textfield
+  late TextEditingController emailFieldController;
 
   // TODO: Create loading animation when busyLoading is true.
   bool _busyLoading = false;
 
   NetworkHelper networkHelper = NetworkHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    // To set the initial value of the email TextField
+    email = widget.passedEmail ?? '';
+    emailFieldController = TextEditingController(text: email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +50,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
           children: <Widget>[
             // Email TextField
             TextField(
+              controller: emailFieldController,
               onChanged: (value) {
                 email = value;
               },
@@ -65,7 +79,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
               height: 8.0,
             ),
 
-            // Register button
+            // Verify button
             CustomRoundedButton(
               text: 'Verify e-mail',
               color: Colors.blueAccent,
@@ -75,20 +89,28 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                 });
                 try {
                   Map<String, dynamic> responseMap =
-                      await networkHelper.verifyEmail(email: email, otp: otp);
-                  if (responseMap['user']['statusCode'] == 200) {
-                    print(responseMap['user']['data']['email']);
+                      await networkHelper.verifyEmailOnline(email: email, otp: otp);
+                  // If everything went perfectly, the email is verified.
+                  // So, pushReplacement to HomeScreen
+                  print('The response to the VerifyEmail request: $responseMap');
+                  if (responseMap['user']['statusCode'] != 200) {
+                    pushErrorScreen(
+                      context: context,
+                      error: responseMap['user']['message'],
+                      screenId: VerifyEmailScreen.screenId,
+                    );
+                  } else if (responseMap['user']['statusCode'] == 200) {
+                    networkHelper.verifyEmailOnline(email: email, otp: otp);
+                    if (mounted) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(HomeScreen.screenId);
+                    }
                   }
-
-                  // // If everything went perfectly
-                  // if (response['statusCode'] == 200) {
-                  //
-                  // }
                 } catch (e) {
                   pushErrorScreen(
                     context: context,
                     error: e,
-                    screenId: ConfirmEmailScreen.screenId,
+                    screenId: VerifyEmailScreen.screenId,
                   );
                 }
                 setState(() {
@@ -101,4 +123,12 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // dispose the TextEditingController
+    emailFieldController.dispose();
+  }
+
 }

@@ -5,6 +5,7 @@ import 'package:foodelo/general_components/push_error_screen.dart';
 // screens
 import 'package:foodelo/screens/login_screen.dart';
 import 'package:foodelo/screens/registration_screen.dart';
+import 'package:foodelo/screens/verify_email_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const screenId = 'Welcome_screen';
@@ -49,6 +50,37 @@ class WelcomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, RegistrationScreen.screenId);
               },
               color: Colors.blueAccent,
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Verify Email Button
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VerifyEmailScreen(),
+                    ));
+                  },
+                  child: const Text(
+                    'Verify email',
+                    style: TextStyle(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+
+                // Forgot password button
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Forgot password?',
+                    style: TextStyle(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

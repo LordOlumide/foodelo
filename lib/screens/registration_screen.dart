@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodelo/network_helper.dart';
-
 // components
 import 'package:foodelo/screens/multi_screen_ui_comps/'
     'custom_rounded_button.dart';
 import 'package:foodelo/screens/multi_screen_ui_comps/ui_constants.dart';
 import 'package:foodelo/general_components/push_error_screen.dart';
-
 // screens
-import 'package:foodelo/screens/confirm_email_screen.dart';
+import 'package:foodelo/screens/verify_email_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const screenId = 'Registration_screen';
@@ -94,15 +92,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 });
                 try {
                   Map<String, dynamic> responseMap =
-                      await networkHelper.register(name, email, password);
-                  if (responseMap['user']['statusCode'] == 200) {
-                    print(responseMap['user']['data']['email']);
+                      await networkHelper.registerOnline(name: name, email: email, password: password);
+                  print('Response to the Registration request: $responseMap');
+                  // TODO: find out why the verification otp is part of the response
+                  // If everything went perfectly, the user account has been
+                  // created. So, pushReplacement to verification screen.
+                  if (responseMap['success'] == false) {
+                    pushErrorScreen(
+                      context: context,
+                      error: responseMap['errors'][0]['msg'],
+                      screenId: RegistrationScreen.screenId,
+                    );
+                  } else if (responseMap['user']['statusCode'] == 200) {
+                    if (mounted) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => VerifyEmailScreen(passedEmail: email),
+                      ));
+                    }
                   }
-
-                  // // If everything went perfectly
-                  // if (response['statusCode'] == 200) {
-                  //
-                  // }
                 } catch (e) {
                   pushErrorScreen(
                     context: context,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodelo/screens/error_screen/error_screen.dart';
+import 'package:foodelo/screens/error_screen.dart';
 
 pushErrorScreen({
   required BuildContext context,
