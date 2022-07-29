@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
+// components
+import 'package:foodelo/general_components/user_credentials_object.dart';
 
 class HomeScreen extends StatefulWidget {
   static const screenId = 'Home_screen';
-  const HomeScreen({Key? key}) : super(key: key);
+  final UserCredentials? userCredentials;
+
+  const HomeScreen({Key? key, this.userCredentials}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Text('Home screen'),
+        child: Text(widget.userCredentials.toString()),
       ),
     );
   }

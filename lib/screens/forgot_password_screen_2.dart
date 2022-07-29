@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:foodelo/network_helper.dart';
+
 // components
 import 'package:foodelo/screens/multi_screen_ui_comps/'
     'custom_rounded_button.dart';
 import 'package:foodelo/screens/multi_screen_ui_comps/ui_constants.dart';
 import 'package:foodelo/general_components/push_error_screen.dart';
-// screens
-import 'package:foodelo/screens/verify_email_screen.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static const screenId = 'Registration_screen';
+/// This screen is to reset the password
+class ResetPasswordScreen extends StatefulWidget {
+  static const screenId = 'Reset password screen';
+  final String userId;
 
-  const RegistrationScreen({Key? key}) : super(key: key);
+  const ResetPasswordScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  String name = '';
-  String email = '';
-  String password = '';
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  String otp = '';
+  String newPassword = '';
 
   // TODO: Create loading animation when busyLoading is true.
   bool _busyLoading = false;
@@ -37,54 +37,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // Name TextField
+            // OTP TextField
             TextField(
               onChanged: (value) {
-                name = value;
+                otp = value;
               },
-              keyboardType: TextInputType.name,
               textAlign: TextAlign.center,
               decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your name',
+                hintText: 'Enter OTP',
               ),
             ),
             const SizedBox(
               height: 8.0,
             ),
 
-            // Email TextField
+            // newPassword textfield
             TextField(
               onChanged: (value) {
-                email = value;
-              },
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your email',
-              ),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-
-            // Password textfield
-            TextField(
-              onChanged: (value) {
-                password = value;
+                newPassword = value;
               },
               obscureText: true,
               textAlign: TextAlign.center,
               decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your password',
+                hintText: 'Enter new password',
               ),
             ),
             const SizedBox(
               height: 24.0,
             ),
 
-            // Register button
+            // Reset Password button
             CustomRoundedButton(
-              text: 'Register',
+              text: 'Reset Password',
               color: Colors.blueAccent,
               onPressed: () async {
                 setState(() {
@@ -92,31 +76,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 });
                 try {
                   Map<String, dynamic> responseMap =
-                      await networkHelper.registerOnline(name: name, email: email, password: password);
-                  print('Response to the Registration request: $responseMap');
-                  // TODO: find out why the verification otp is part of the response
-                  // If everything went perfectly, the user account has been
-                  // created. So, pushReplacement to verification screen.
-                  if (responseMap['user']['statusCode'] != null) {
-                    if (responseMap['user']['statusCode'] == 200) {
-                      if (mounted) {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => VerifyEmailScreen(passedEmail: email),
-                        ));
-                      }
+                      await networkHelper.resetPasswordOnline(
+                    userId: widget.userId,
+                    otp: otp,
+                    newPassword: newPassword,
+                  );
+                  print('Response to the reset password request $responseMap');
+                  if (responseMap['user']['statusCode'] == 200) {
+                    // At this point, the password has changed so return to welcome screen
+                    if (mounted) {
+                      Navigator.pop(context);
                     }
-                  } else if (responseMap['success'] == false) {
+                  } else {
                     pushErrorScreen(
                       context: context,
                       error: responseMap['errors'][0]['msg'],
-                      screenId: RegistrationScreen.screenId,
+                      screenId: ResetPasswordScreen.screenId,
                     );
                   }
                 } catch (e) {
                   pushErrorScreen(
                     context: context,
                     error: e,
-                    screenId: RegistrationScreen.screenId,
+                    screenId: ResetPasswordScreen.screenId,
                   );
                 }
                 setState(() {

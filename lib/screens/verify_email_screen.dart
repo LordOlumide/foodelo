@@ -6,7 +6,7 @@ import 'package:foodelo/screens/multi_screen_ui_comps/'
 import 'package:foodelo/screens/multi_screen_ui_comps/ui_constants.dart';
 import 'package:foodelo/general_components/push_error_screen.dart';
 // screens
-import 'package:foodelo/screens/home_screen/home_screen.dart';
+import 'package:foodelo/screens/login_screen.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   static const screenId = 'Verify email screen';
@@ -69,7 +69,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               onChanged: (value) {
                 otp = value;
               },
-              keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.center,
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter the OTP',
@@ -93,18 +92,18 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   // If everything went perfectly, the email is verified.
                   // So, pushReplacement to HomeScreen
                   print('The response to the VerifyEmail request: $responseMap');
-                  if (responseMap['user']['statusCode'] != 200) {
+                  if (responseMap['user']['statusCode'] == 200) {
+                    networkHelper.verifyEmailOnline(email: email, otp: otp);
+                    if (mounted) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(LoginScreen.screenId);
+                    }
+                  } else if (responseMap['user']['statusCode'] != 200) {
                     pushErrorScreen(
                       context: context,
                       error: responseMap['user']['message'],
                       screenId: VerifyEmailScreen.screenId,
                     );
-                  } else if (responseMap['user']['statusCode'] == 200) {
-                    networkHelper.verifyEmailOnline(email: email, otp: otp);
-                    if (mounted) {
-                      Navigator.of(context)
-                          .pushReplacementNamed(HomeScreen.screenId);
-                    }
                   }
                 } catch (e) {
                   pushErrorScreen(

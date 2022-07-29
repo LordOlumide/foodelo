@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'multi_screen_ui_comps/custom_rounded_button.dart';
-import 'package:foodelo/general_components/push_error_screen.dart';
-
 // screens
 import 'package:foodelo/screens/login_screen.dart';
 import 'package:foodelo/screens/registration_screen.dart';
 import 'package:foodelo/screens/verify_email_screen.dart';
+import 'package:foodelo/screens/forgot_password_screen_1.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const screenId = 'Welcome_screen';
 
   const WelcomeScreen({Key? key}) : super(key: key);
 
+  // TODO: use Provider to supply a single instance of NetworkHelper() everywhere
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +72,11 @@ class WelcomeScreen extends StatelessWidget {
 
                 // Forgot password button
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ForgotPasswordScreen(),
+                    ));
+                  },
                   child: const Text(
                     'Forgot password?',
                     style: TextStyle(
